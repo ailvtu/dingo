@@ -11,7 +11,6 @@ import android.hardware.SensorManager;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.text.format.Time;
 
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,7 +26,7 @@ public class MainActivity extends ActionBarActivity {
     TextView textViewX = null;
     TextView textViewY = null;
     TextView textViewZ = null;
-    TextView textViewC = null;
+    TextView textViewXYZ = null;
     TextView textViewTime = null;
     Button StartButton = null;
     Button StopButton = null;
@@ -71,7 +70,7 @@ public class MainActivity extends ActionBarActivity {
         textViewX =(TextView) findViewById(R.id.XXX);
         textViewY =(TextView) findViewById(R.id.YYY);
         textViewZ =(TextView) findViewById(R.id.ZZZ);
-        textViewC = (TextView)findViewById(R.id.Compound);
+        textViewXYZ = (TextView)findViewById(R.id.Compound);
         textViewTime = (TextView)findViewById(R.id.Time);
         StartButton = (Button) findViewById(R.id.StartButton);
         StopButton = (Button)findViewById(R.id.StopButton);
@@ -93,7 +92,8 @@ public class MainActivity extends ActionBarActivity {
                         textViewX.setText("X :"+magneticFieldValues[0]);
                         textViewY.setText("Y :"+magneticFieldValues[1]);
                         textViewZ.setText("Z :"+magneticFieldValues[2]);
-                        //value = Math.sqrt(magneticFieldValues[0] *magneticFieldValues[0] + magneticFieldValues[1] * magneticFieldValues[1] +magneticFieldValues[2] *magneticFieldValues[2]);
+                        double compoundValue = Math.sqrt(magneticFieldValues[0] *magneticFieldValues[0] + magneticFieldValues[1] * magneticFieldValues[1] +magneticFieldValues[2] *magneticFieldValues[2]);
+                        textViewXYZ.setText("XYZ : "+compoundValue);
                         FileHandle.writeDataTofile(magneticFieldValues,magFile);
                     }
                     else if (event.sensor.getType()==Sensor.TYPE_ACCELEROMETER){
@@ -104,8 +104,8 @@ public class MainActivity extends ActionBarActivity {
                         accelerometerValues[0] = event.values[0] - gravity[0];
                         accelerometerValues[1] = event.values[1] - gravity[1];
                         accelerometerValues[2] = event.values[2] - gravity[2];
-                        float valueAcc  = (float) Math.sqrt(event.values[0]*event.values[0]+event.values[1]*event.values[1]+event.values[2]*event.values[2]);
-                        //float valueAcc  = (float) Math.sqrt(accelerometerValues[0]*accelerometerValues[0]+accelerometerValues[1]*accelerometerValues[1]+accelerometerValues[2]*accelerometerValues[2]);
+                       // float valueAcc  = (float) Math.sqrt(event.values[0]*event.values[0]+event.values[1]*event.values[1]+event.values[2]*event.values[2]);
+                        float valueAcc  = (float) Math.sqrt(accelerometerValues[0]*accelerometerValues[0]+accelerometerValues[1]*accelerometerValues[1]+accelerometerValues[2]*accelerometerValues[2]);
                         int stepNum = stepDect.DetectorNewStep(valueAcc);
                         textViewstepFind.setText(" Step : "+stepNum);
                         FileHandle.writeDataTofile(accelerometerValues,acceFile);
